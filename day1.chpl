@@ -114,10 +114,15 @@ class MaxThree : ReduceScanOp {
 
 /*
   Let's make it possible to select which part we want to solve from the
-  command line. This can be easily achieved via a `config const`. We'll
-  also add a `config const` to enable/disable parallel computation. */
+  command line. This can be easily achieved via a `config const`. A
+  variable like this can be set when running the program from the command
+  line as follows:
+
+  ```bash
+  ./my-program --part=1
+  ```
+  */
 config const part = 1;
-config const parallel = false;
 
 /* Here's how we use our solution. */
 if part == 1 {
@@ -125,25 +130,8 @@ if part == 1 {
      the one maximum number. */
   writeln(max reduce elves());
 } else if part == 2 {
-  if !parallel {
-    /* For the non-parallel version, we can just use `MaxThree` in the
-       reduce expression, which gives us our top-3 tuple. To solve
-       the puzzle, all that's left is to sum the elements of that tuple,
-       which we achieve via another `+ reduce`. */
-    writeln(+ reduce (MaxThree reduce elves()));
-  } else {
-    /* For the parallel case, we have to use a `forall` loop, which is
-       Chapel's way of expressing parallelism. `forall` loops have
-       support for `reduce expression`. In all, the code looks like the
-       following. */
-    var max3 = (0,0,0);
-    // Need to read all the numbers into memory to make sure we can distribute
-    var elfList = elves();
-    // To make a reduction parallel, we use a forall loop with a reduce intent
-    forall elf in elfList with (MaxThree(int) reduce max3) {
-      max3 reduce= elf;
-    }
-    writeln(+ reduce max3);
-  }
+  // Need to read all the numbers into memory to make sure we can distribute
+  var elfList = elves();
+  writeln(+ reduce (MaxThree reduce elfList));
 }
 
