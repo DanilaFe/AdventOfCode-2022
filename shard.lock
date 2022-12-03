@@ -1,0 +1,6 @@
+version: 2.0
+shards:
+  advent:
+    git: https://dev.danilafe.com/Advent-of-Code/advent
+    version: 0.1.0+git.commit.aae61f796d72ee5f7622fad99872751453294afb
+

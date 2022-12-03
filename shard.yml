@@ -1,0 +1,14 @@
+name: advent-of-code-2022
+version: 0.1.0
+
+# authors:
+#   - name <email@example.com>
+
+# description: |
+#   Short description of advent-of-code-2022
+
+dependencies:
+  advent:
+    git: https://dev.danilafe.com/Advent-of-Code/advent
+
+# license: MIT
