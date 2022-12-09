@@ -2,11 +2,10 @@ require "advent"
 INPUT = input(2022, 6).lines[0].chars
 
 def part1(input)
-  offset = 0
-  loop do
-    chars = input[offset..offset+3]
-    return offset + 4 if chars.uniq.size == 4
-    offset += 1
+  idx = 0
+  input.each_cons(4) do |x|
+    return idx + 4 if x.uniq.size == 4
+    idx += 1
   end
 end
 
