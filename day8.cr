@@ -16,7 +16,6 @@ def score(arr, x, y, dx, dy)
     y += dy
   end
   count += 1 if (x >= 0 && x < arr.size && y >= 0 && y < arr[x].size)
-  puts ({dx, dy, count}).to_s
   count
 end
 
@@ -31,7 +30,6 @@ def part1(input)
       y += 1
       tree = input[x][y]
       if visible_in_row(input[x], y) || visible_in_row(input_t[y], x)
-        puts ({x, y, tree}).to_s
         count += 1 
       end
     end
@@ -44,11 +42,9 @@ def part2(input)
   (input.size - 0).times do |x|
     (input[x].size - 0).times do |y|
       tree_score = score(input, x, y, 1, 0) * score(input, x, y, -1, 0) * score(input, x, y, 0, 1) * score(input, x, y, 0, -1)
-      puts ({x, y, input[x][y], tree_score}).to_s
       if tree_score > best
         best = tree_score 
       end
-      puts "--"
     end
   end
   best
