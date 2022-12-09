@@ -3,9 +3,9 @@
 // summary: "Daniel's take on day 1 of advent of code, featuring reduce expressions, iterators, and custom reductions"
 // authors: ["Daniel Fedorin"]
 // date: 2022-12-01
-// draft: true
-
 /*
+  {{< whole_file_min >}}
+
   And so Advent of Code begins! Today's challenge is, as usual for the first
   day, a fairly easy one. Brad has [already written]({{< relref "aoc2022-day01-calories" >}}) a wonderful introduction for
   this challenge, and provided his own solution to the first part. In that
