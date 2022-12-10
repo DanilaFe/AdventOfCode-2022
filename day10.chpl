@@ -1,40 +1,23 @@
 use IO, Map;
 
 iter ops() {
+  yield 1; // Initial state
   for line in stdin.lines().strip() {
-    if line == "noop" then {
-      yield [0];
-    } else {
-      const (_, _, n) = line.partition(" ");
-      yield [0, n : int];
+    select line[0..3] {
+      when "noop" do yield 0;
+      when "addx" {
+        yield 0;
+        yield line[5..] : int;
+      }
     }
   }
 }
 
-var pc = 1;
-var reg = 1;
-var state = new map(int, int);
-for op in ops() {
-  writeln(op);
-  for diff in op {
-    state[pc] = reg;
-    reg += diff;
-    pc += 1;
-    writeln("State: ", (pc, reg));
-  }
-}
+const deltas = ops();
+const states = + scan deltas;
 const indices = 20..220 by 40;
-const values = state[indices];
-writeln(indices * values);
-writeln(+ reduce (indices * values));
+writeln(+ reduce (states[indices-1] * indices));
 
-var crt: [1..6, 0..<40] bool = false;
-
-for (idx, pc) in zip(crt.domain, 1..) {
-  writeln("sprite pos: ", state[pc], " index: ", idx[1]);
-  crt[idx] = abs(state[pc] - idx[1]) <= 1;
-}
-
-for line in crt.domain.dim(0) {
-  writeln([i in crt[line, ..]] if i then '#' else '.');
-}
+const pixels = [(x, pc) in zip(states[0..<240], 0..)]
+  if abs((pc % 40) - x) <= 1 then "#" else " ";
+writeln(reshape(pixels, {1..6, 1..40}));
