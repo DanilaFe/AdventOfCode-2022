@@ -13,11 +13,12 @@ iter ops() {
   }
 }
 
-const deltas = ops();
-const states = + scan deltas;
-const indices = 20..220 by 40;
-writeln(+ reduce (states[indices-1] * indices));
+const deltas = ops(),
+      cycles = deltas.size,
+      states: [1..cycles] int = + scan deltas,
+      interesting = 20..220 by 40;
+writeln(+ reduce (states[interesting] * interesting));
 
-const pixels = [(x, pc) in zip(states[0..<240], 0..)]
+const pixels = [(x, pc) in zip(states[1..240], 0..)]
   if abs((pc % 40) - x) <= 1 then "#" else " ";
 writeln(reshape(pixels, {1..6, 1..40}));
