@@ -10,7 +10,7 @@ def add_at(pos, c, x, y)
   o = 'a' if o == 'S'
   o = 'z' if o == 'E'
 
-  return if (o.ord-c.ord) > 1
+  return if (c.ord-o.ord) > 1
   EDGES[pos] << ({x,y});
 end
 
@@ -29,17 +29,17 @@ def add_nearby(x, y)
 end
 
 from = {0,0}
-to = {0,0}
+to = {100,100}
 INPUT.each_with_index do |row, y|
   row.each_with_index do |c, x|
     pos = {x, y}
     add_nearby(x, y)
-    from = pos if c == 'S'
-    to = pos if c == 'E'
+    from = pos if c == 'E'
   end
 end
 
 costs = {from => 0}
+mins = {} of Tuple(Int32, Int32) => Int32
 visited = Set(Tuple(Int32, Int32)).new
 
 while !costs.empty?
@@ -53,6 +53,7 @@ while !costs.empty?
   end
 
   costs.delete k
+  mins[k] = v
   visited << k
   INPUT[k[1]][k[0]] = INPUT[k[1]][k[0]].upcase
   puts k
@@ -67,9 +68,16 @@ while !costs.empty?
   end
 end
 
-INPUT.each do |line|
-  line.each do |c|
+lengths = [] of Int32
+puts mins
+INPUT.each_with_index do |line, y|
+  line.each_with_index do |c, x|
+    next unless c == 'A'
+    if amin = mins[{x,y}]?
+      lengths << amin 
+    end
     print c
   end
   puts
 end
+puts lengths.min
