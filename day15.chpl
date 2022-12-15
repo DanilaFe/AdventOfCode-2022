@@ -7,17 +7,6 @@ iter data() {
   }
 }
 
-iter positions((x1,y1), len) {
-  for l in 0..len {
-    for (dx, dy) in zip(0..l, 0..l by -1) {
-      yield (x1+dx, y1+dy);
-      yield (x1+dx, y1-dy);
-      yield (x1-dx, y1+dy);
-      yield (x1-dx, y1-dy);
-    }
-  }
-}
-
 record overlapping {
   var disjoint: list(range(int));
 
@@ -46,8 +35,6 @@ record overlapping {
 }
 
 enum axis { xAxis = 0, yAxis = 1 };
-use axis;
-
 proc ((int, int)).rangeAlong(axs: axis, reach: int, theXOrY: int) {
   const dim = axs : int;
   const dist = abs(this[dim]-theXOrY);
@@ -71,7 +58,7 @@ var occupied: set((int, int));
 for (sensor, beacon, reach) in input {
   occupied.add(sensor);
   occupied.add(beacon);
-  overlaps.add(sensor.rangeAlong(yAxis, reach, theY));
+  overlaps.add(sensor.rangeAlong(axis.yAxis, reach, theY));
 }
 writeln(overlaps.size - (+ reduce [(x,y) in occupied] if y == theY then 1));
 
@@ -79,7 +66,7 @@ writeln(overlaps.size - (+ reduce [(x,y) in occupied] if y == theY then 1));
 forall checkY in searchSpace {
   var overlaps: overlapping;
   for (sensor, _, reach) in input {
-    overlaps.add(sensor.rangeAlong(yAxis, reach, checkY));
+    overlaps.add(sensor.rangeAlong(axis.yAxis, reach, checkY));
   }
 
   if overlaps.boundedSize(searchSpace) != searchSpace.size {
